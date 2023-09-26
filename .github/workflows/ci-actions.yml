@@ -32,17 +32,28 @@ jobs:
           pip install -r py_requirements.txt
 
       - name: execute load script
-        run: python load_dataset.py
+        run: python load_data/load_dataset_to_redshift.py
 
   transformation_compile:
     runs-on: ubuntu-latest
+    needs: [load_datasets]
     container:
       image: ghcr.io/dbt-labs/dbt-redshift:1.6.1
     
     steps:
       - uses: actions/checkout@v4
 
-      - name: big hello!
-        run: echo Hello, EIDU!
+      - name: dbt initialize
+        run: |
+          dbt --version
+          ls
+          mv transform_data/dbt_profiles.yml transform_data/profiles.yml
+          export DBT_PROFILES_DIR=transform_data
+          export DBT_PROJECT_DIR=transform_data
+          echo $DBT_PROFILES_DIR
+          echo $DBT_PROJECT_DIR
+          dbt debug --config-dir
+
+
 
     
