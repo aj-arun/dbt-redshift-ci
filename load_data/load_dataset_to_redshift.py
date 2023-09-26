@@ -7,7 +7,7 @@ print(os.getcwd())
 print(os.listdir())
 print(os.listdir("../"))
 
-with bz2_uncompresser("transform_data/events.jsonl.bz2", 'rt', encoding='utf-8') as file:
-    df_eidu_data = read_json(file, lines=True)
+#with bz2_uncompresser("transform_data/events.jsonl.bz2", 'rt', encoding='utf-8') as file:
+#    df_eidu_data = read_json(file, lines=True)
 
-print(df_eidu_data.shape)
+#print(df_eidu_data.shape)
