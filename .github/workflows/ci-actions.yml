@@ -54,7 +54,7 @@ jobs:
         run: |
           echo $DBT_PROFILES_DIR
           echo $DBT_PROJECT_DIR
-          ls
+
           
       - name: dbt test connection
         run: dbt debug
