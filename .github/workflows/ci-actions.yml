@@ -47,17 +47,9 @@ jobs:
         run: |
           dbt --version
           mv transform_data/dbt_profile.yml transform_data/profiles.yml
-          export DBT_PROFILES_DIR=transform_data
-          export DBT_PROJECT_DIR=transform_data
-
-      - name: test
-        run: |
-          echo $DBT_PROFILES_DIR
-          echo $DBT_PROJECT_DIR
-
           
       - name: dbt test connection
-        run: dbt debug
+        run: dbt debug --project-dir transform_data --profiles-dir transform_data --profile EIDU
 
 
 
