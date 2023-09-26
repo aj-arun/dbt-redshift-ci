@@ -46,13 +46,18 @@ jobs:
       - name: dbt initialize
         run: |
           dbt --version
-          ls
           mv transform_data/dbt_profiles.yml transform_data/profiles.yml
           export DBT_PROFILES_DIR=transform_data
           export DBT_PROJECT_DIR=transform_data
+
+      - name: test
+        run: |
           echo $DBT_PROFILES_DIR
           echo $DBT_PROJECT_DIR
-          dbt debug --config-dir
+          ls
+          
+      - name: dbt test connection
+        run: dbt debug --config-dir
 
 
 
