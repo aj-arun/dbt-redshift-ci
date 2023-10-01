@@ -23,7 +23,7 @@ jobs:
       - name: install python packages
         run: |
           python -m pip install -q --upgrade pip
-          pip install -r  -q load_data/py_requirements.txt
+          pip install -q -r load_data/py_requirements.txt
 
       - name: execute load script
         run: python load_data/load_dataset_to_redshift.py
