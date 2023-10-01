@@ -1,7 +1,7 @@
 # This is a basic workflow to help you get started with Actions
 
 name: CI/CD
-run-name: Seggregating and Analysing EIDU User Behaviour Events
+run-name: Seggregating and Analysing EIDU Events logs
 
 on:
   push:
@@ -22,8 +22,9 @@ jobs:
 
       - name: install python packages
         run: |
-          pip config -q set global.disable-pip-version-check true
-          pip install -q -r load_data/py_requirements.txt 
+          python -m pip config --quiet set global.disable-pip-version-check true
+          python -m pip install --quiet --user --requirement load_data/py_requirements.txt
+          echo "Installed Packages Successfully" ; cat load_data/py_requirements.txt
 
       - name: execute load script
         run: python load_data/load_dataset_to_redshift.py
