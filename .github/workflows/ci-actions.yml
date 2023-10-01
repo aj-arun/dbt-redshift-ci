@@ -4,32 +4,26 @@ name: CI/CD
 run-name: Seggregating and Analysing EIDU User Behaviour Events
 
 on:
-  # Triggers the workflow on push or pull request events but only for the "main" branch
   push:
     branches: [ "main" ]
   pull_request:
     branches: [ "main" ]
 
-  # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
-# A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  # This workflow contains a single job called "build"
   load_datasets:
-    # The type of runner that the job will run on
     runs-on: ubuntu-latest
     container: 
       image: python:3.9-slim-bookworm
-    # Steps represent a sequence of tasks that will be executed as part of the job
+
     steps:
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v4
 
       - name: install python packages
         run: |
-          python -m pip install --upgrade pip
-          pip install -r py_requirements.txt
+          python -m pip install -q --upgrade pip
+          pip install -r  -q load_data/py_requirements.txt
 
       - name: execute load script
         run: python load_data/load_dataset_to_redshift.py
