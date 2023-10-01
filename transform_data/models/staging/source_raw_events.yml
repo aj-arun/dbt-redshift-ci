@@ -1,0 +1,8 @@
+version: 2
+
+sources:
+  - name: raw_device_events
+    database: challenge_suganthi  
+    schema: raw_events
+    tables:
+      - name: user_behaviour

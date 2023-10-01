@@ -27,7 +27,7 @@ jobs:
           echo "Installed Packages Successfully" ; cat load_data/py_requirements.txt
 
       - name: execute load script
-        run: python load_data/load_dataset_to_redshift.py
+        run: python load_data/load_data_to_redshift.py
 
   transformation_compile:
     runs-on: ubuntu-latest

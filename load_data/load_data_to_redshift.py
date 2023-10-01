@@ -1,7 +1,6 @@
 from loguru import logger
 from yaml import safe_load, YAMLError
 from pandas import read_json, DataFrame
-from bz2 import open as bz2_uncompresser
 from redshift_connector import connect, Connection
 
 SCHEMA_NAME = "raw_data"
@@ -21,10 +20,9 @@ def read_data(file_loc: str) -> DataFrame:
 
     Raises: None
     """
-    with bz2_uncompresser(file_loc, "rt", encoding="utf-8") as file:
-        df_eidu_event_logs = read_json(file, lines=True)
-        logger.info(f"Raw Data dimension: {df_eidu_event_logs.shape}")
-        return df_eidu_event_logs
+    df_eidu_event_logs = read_json(file_loc, lines=True)
+    logger.info(f"Raw Data dimension: {df_eidu_event_logs.shape}")
+    return df_eidu_event_logs
 
 
 def get_db_connection(config: str) -> Connection:
@@ -76,11 +74,11 @@ def get_db_connection(config: str) -> Connection:
         raise (error)
 
 
-def fetch_table_count(db_cursor: Connection.cursor) -> int:
+def fetch_table_count_if_exists(db_cursor: Connection.cursor) -> int:
     """return the table count
 
     Args:
-        None
+        db_cursor (Connection.cursor): Cursor object of connection class
 
     Returns:
         int: number of rows
@@ -88,8 +86,15 @@ def fetch_table_count(db_cursor: Connection.cursor) -> int:
     Raises:
         None
     """
-    db_cursor.execute(f"SELECT COUNT(*) FROM {SCHEMA_NAME}.{TABLE_NAME}")
-    return db_cursor.fetch_numpy_array().flat[0]
+    db_cursor.execute(f"""SELECT EXISTS (SELECT 1 FROM information_schema.tables
+                    WHERE table_schema ='{SCHEMA_NAME}' 
+                    AND table_name = '{TABLE_NAME}')""")
+    
+    if db_cursor.fetch_numpy_array().flat[0]:
+        db_cursor.execute(f"SELECT COUNT(*) FROM {SCHEMA_NAME}.{TABLE_NAME} ")
+        return db_cursor.fetch_numpy_array().flat[0]
+    else:
+        return 0
 
 
 def commit_and_close_db_connection(conn: Connection):
@@ -111,15 +116,17 @@ if __name__ == "__main__":
 
     raw_data = read_data(FILE_PATH)
     db_conn = get_db_connection(REDSHIFT_ENV)
+    db_cursor = db_conn.cursor()
 
-    with db_conn.cursor() as db_cursor:
+    # loading data only when table does not exist
+    if not fetch_table_count_if_exists():
         db_cursor.execute(f"CREATE SCHEMA IF NOT EXISTS {SCHEMA_NAME}")
         db_cursor.execute(
             f"""
             CREATE TABLE IF NOT EXISTS {SCHEMA_NAME}.{TABLE_NAME}
             (
                 type TEXT,
-                time TIMESTAMPTZ,
+                time TIMESTAMP,
                 logId TEXT,
                 logType TEXT,
                 name TEXT,
@@ -127,15 +134,13 @@ if __name__ == "__main__":
                 sessionId TEXT
             )"""
         )
-        if not fetch_table_count(db_cursor) == raw_data.shape[-1]:
-            # load only if the data is not loaded yet.
-            db_cursor.write_dataframe(raw_data, f"{SCHEMA_NAME}.{TABLE_NAME}")
-            logger.success(
+        db_cursor.write_dataframe(raw_data, f"{SCHEMA_NAME}.{TABLE_NAME}")
+        logger.success(
                 f"Successfully loaded the data to {SCHEMA_NAME}.{TABLE_NAME}"
             )
-        else:
-            logger.info(
-                f"Skipping: Table already exists with data {SCHEMA_NAME}.{TABLE_NAME}"
-            )
+    else:
+        logger.info(
+            f"Skipping: Table already exists with data {SCHEMA_NAME}.{TABLE_NAME}"
+        )
 
     commit_and_close_db_connection(db_conn)

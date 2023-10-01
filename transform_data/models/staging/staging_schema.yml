@@ -1,0 +1,25 @@
+version: 2
+
+models:
+  - name: set_log_type_event
+    description: "Every log needs to have a SetLogTypeEvent on it. Here, it can have the values School or Device"
+    columns:
+      - name: time
+        description: "event generation time"
+      - name: log_id
+        description: "event identifier"
+      - name: log_type
+        description: "source of event generation"
+        tests:
+          - accepted_values:
+              values: ['School', 'Device']
+
+  - name: set_name_event
+    description: "SetNameEvent is used for setting (and updating) a school's (or generally any other entity's) name. Here, it should only appear on logs of type School"
+    columns:
+      - name: time
+        description: "event generation time"
+      - name: log_id
+        description: "event identifier"
+      - name: name
+        description: "school name"
