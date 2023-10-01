@@ -108,5 +108,5 @@ if __name__ == "__main__":
         db_cursor.write_dataframe(raw_data, "raw_data.event_logs")
 
     commit_and_close_db_connection(db_conn)
-    logger.success("Successfully loaded the data to {SCHEMA_NAME}.{TABLE_NAME}")
+    logger.success(f"Successfully loaded the data to {SCHEMA_NAME}.{TABLE_NAME}")
 
