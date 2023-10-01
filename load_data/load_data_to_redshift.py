@@ -119,7 +119,7 @@ if __name__ == "__main__":
     db_cursor = db_conn.cursor()
 
     # loading data only when table does not exist
-    if not fetch_table_count_if_exists():
+    if not fetch_table_count_if_exists(db_cursor):
         db_cursor.execute(f"CREATE SCHEMA IF NOT EXISTS {SCHEMA_NAME}")
         db_cursor.execute(
             f"""
