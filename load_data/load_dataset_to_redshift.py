@@ -95,13 +95,13 @@ if __name__ == "__main__":
         db_cursor.execute(f"CREATE SCHEMA IF NOT EXISTS {SCHEMA_NAME}")
         db_cursor.execute(f"""CREATE TABLE IF NOT EXISTS {SCHEMA_NAME}.{TABLE_NAME}
             (
-                type STRING,
+                type TEXT,
                 time TIMESTAMPTZ,
-                logId STRING,
-                logType STRING,
-                name STRING,
-                schoolId STRING,
-                sessionId STRING
+                logId TEXT,
+                logType TEXT,
+                name TEXT,
+                schoolId TEXT,
+                sessionId TEXT
             )
             """
         )
