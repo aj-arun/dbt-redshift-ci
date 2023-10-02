@@ -6,13 +6,8 @@ run-name: Seggregating and Analysing EIDU Events logs
 on:
   push:
     branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
-
-  workflow_dispatch:
 
 jobs:
-
 
   transformation_dbt:
     runs-on: ubuntu-latest
