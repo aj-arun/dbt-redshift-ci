@@ -54,9 +54,15 @@ jobs:
           git config --global --add safe.directory $(realpath .)
           git config user.name github-actions
           git config user.email github-actions@eidu.com
-          git add dbt_run_artifacts/manifest.json
-          git commit -m "Adding/Updating Dbt state file"
-          git push
+          if [[ $(git diff dbt_run_artifacts/manifest.json  | wc -c) -ne 0 ]]; then       √
+            echo "Changes detected to Manifest file: Commiting changes"
+            git add dbt_run_artifacts/manifest.json
+            git commit -m "Adding/Updating Dbt state file"
+            git push
+          else
+            echo "Skipping: No changes detected"
+          fi
+
 
 
 
