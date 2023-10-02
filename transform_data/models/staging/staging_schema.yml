@@ -1,20 +1,23 @@
 version: 2
 
 models:
-  - name: set_log_type_event
+  - name: set_school_log_type_event
     description: "Every log needs to have a SetLogTypeEvent on it. Here, it can have the values School or Device"
     columns:
       - name: time
         description: "event generation time"
       - name: log_id
         description: "event identifier"
-      - name: log_type
-        description: "source of event generation"
-        tests:
-          - accepted_values:
-              values: ['School', 'Device']
+    
+  - name: set_device_log_type_event
+    description: "Assign device id to log events"
+    columns:
+      - name:  time
+        description:  "event generation time"
+      - name:  logId
+        description:  "event identifier"
 
-  - name: set_name_event
+  - name: set_school_name_event
     description: "SetNameEvent is used for setting (and updating) a school's (or generally any other entity's) name. Here, it should only appear on logs of type School"
     columns:
       - name: time
@@ -23,3 +26,34 @@ models:
         description: "event identifier"
       - name: name
         description: "school name"
+
+  - name: assign_device_to_school_event
+    description: "Assign_device_to_school_event is used for assigning the devices to each school"  
+    columns:
+      - name:  time
+        description: "event generation time"
+      - name:  logId
+        description: "event identifier"
+      - name:  schoolId
+        description: "school identifier"
+
+  - name: start_session_event
+    description: "Start time of each session"
+    columns:
+      - name: time
+        description: "event generation time"
+      - name: logId
+        description:  "event identifier"
+      - name: sessionId  
+        description: "session identifier" 
+
+  - name: end_session_event
+    description: "End time of each session"
+    columns:
+      - name: time
+        description: "event generation time"
+      - name: logId
+        description:  "event identifier"
+      - name: sessionId  
+        description: "session identifier" 
+      

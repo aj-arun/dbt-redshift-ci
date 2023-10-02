@@ -4,7 +4,7 @@ WITH set_school_log_type_event AS (
         "time" AS event_time,
         logId AS school_id
     FROM 
-        {{ source('raw_device_events', 'user_behaviour') }}
+        {{ source('raw_events', 'event_logs') }}
     WHERE  
         "type" = 'SetLogType'
         AND LOWER(logType) = 'school'

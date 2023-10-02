@@ -5,7 +5,7 @@ WITH end_session_event AS (
         logId AS device_id, 
         sessionId AS session_id
     FROM 
-        {{ source('raw_device_events', 'user_behaviour') }}
+        {{ source('raw_events', 'event_logs') }}
     WHERE  
         "type" = 'EndSession'
 

@@ -5,7 +5,7 @@ WITH set_school_name_event AS (
         logId AS school_id,
         "name" AS school_name
     FROM 
-         {{ source('raw_device_events', 'user_behaviour') }}
+        {{ source('raw_events', 'event_logs') }}
     WHERE  
         "type" = 'SetName'
 

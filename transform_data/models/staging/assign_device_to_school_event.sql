@@ -5,7 +5,7 @@ WITH assign_device_to_school_event AS (
         logId AS device_id, 
         schoolId AS school_id
     FROM 
-        {{ source('raw_device_events', 'user_behaviour') }}
+        {{ source('raw_events', 'event_logs') }}
     WHERE  
         "type" = 'AssignToSchool'
 

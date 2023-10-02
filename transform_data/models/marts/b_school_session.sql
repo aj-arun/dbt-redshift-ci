@@ -11,7 +11,7 @@ WITH session AS (
     USING (session_id)
 
 ), 
-session_device AS (
+session_school AS (
 
     SELECT 
         t1.session_id,
@@ -24,7 +24,7 @@ session_device AS (
     USING (device_id)
 
 ),
-session_school AS (
+session_school_name AS (
 
     SELECT
         t1.session_id,
@@ -32,12 +32,12 @@ session_school AS (
         t1.session_end_time, 
         t2.school_name
     
-    FROM session_device t1
+    FROM session_school t1
     LEFT JOIN {{ ref("set_school_name_event") }} t2
     USING (school_id)
 
 )
 
-SELECT * FROM session_school
+SELECT * FROM session_school_name
 
 
