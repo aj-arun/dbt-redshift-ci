@@ -34,12 +34,11 @@ jobs:
         if: "${{ hashFiles('dbt_run_artifacts/manifest.json') != '' }}"
         run: |
           echo "Dbt run state file exits"
-          dbt compile --project-dir transform_data --profiles-dir transform_data 
+          dbt compile --project-dir transform_data --profiles-dir transform_data --target-path transform_data/target
           echo "DBT executing only modified models"
-          cd transform_data
-          cat dbt_project.yml
-          cat profiles.yml
-          dbt run --profiles-dir .. --project-dir . --select state:modified+ --defer --state dbt_run_artifacts 
+          ls -l
+          pwd
+          dbt run --select state:modified+ --defer --state dbt_run_artifacts --target-path transform_data/target --project-dir transform_data --profiles-dir transform_data
       
       - name: dbt full run if no manifest file
         if: "! ${{ hashFiles('dbt_run_artifacts/manifest.json') != '' }}"
