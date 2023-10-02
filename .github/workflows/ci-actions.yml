@@ -34,15 +34,19 @@ jobs:
         id: check_manifest_json
         uses: andstor/file-existence-action@v2
         with:
-          files: "dbt_run_artifacts/manifest.json"
+          files: "./dbt_run_artifacts/manifest.json"
 
       - name: check_true
         if: steps.check_files.outputs.files_exists == 'true'
-        run: echo "True condidion"
+        run: |
+          ls -l
+          echo "True condidion"
 
-      - name: check_fale
+      - name: check_false
         if: steps.check_files.outputs.files_exists != 'true'
-        run: echo "False condidion"
+        run: |
+          ls -l
+          echo "False condidion"
 
       - name: dbt slim run if manifest file exists
         if: "${{ hashFiles('dbt_run_artifacts/manifest.json') != '' }}"
