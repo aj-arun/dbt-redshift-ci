@@ -37,30 +37,16 @@ jobs:
         with:
           files: "dbt_run_artifacts/manifest.json"
 
-      - name: check_true
+      - name: dbt slim run if manifest file exists
         if: steps.check_manifest_json.outputs.files_exists == 'true'
         run: |
-          ls -l
-          ls -l dbt_run_artifacts
-          echo "True condidion"
-
-      - name: check_false
-        if: steps.check_manifest_json.outputs.files_exists != 'true'
-        run: |
-          ls -l
-          ls -l dbt_run_artifacts
-          echo "False condidion"
-
-      - name: dbt slim run if manifest file exists
-        if: "${{ hashFiles('dbt_run_artifacts/manifest.json') != '' }}"
-        run: |
-          echo "Dbt run state file exits"
+          echo "DBT run state file exits"
           dbt compile --project-dir transform_data --profiles-dir transform_data --target-path transform_data/target
           echo "DBT executing only modified models"
           dbt run --select state:modified+ --defer --state ../dbt_run_artifacts --target-path transform_data/target --project-dir transform_data --profiles-dir transform_data
-      
+
       - name: dbt full run if no manifest file
-        if: "! ${{ hashFiles('dbt_run_artifacts/manifest.json') != '' }}"
+        if: steps.check_manifest_json.outputs.files_exists != 'true'
         run: |
           echo "DBT run state file not found"
           echo "DBT executing all models"
