@@ -60,14 +60,9 @@ jobs:
           echo "DBT run state file not found"
           echo "DBT executing all models"
           dbt run --project-dir transform_data --profiles-dir transform_data --profile EIDU
-          ls -l 
-          ls -l transform_data
-
 
       - name: git commit DBT state file
         run: |
-          ls -l 
-          ls -l transform_data
           mkdir -p dbt_run_artifacts
           cp -f transform_data/target/manifest.json dbt_run_artifacts/manifest.json
           git config --global --add safe.directory $(realpath .)
