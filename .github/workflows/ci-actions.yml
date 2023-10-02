@@ -38,7 +38,7 @@ jobs:
           echo "DBT executing only modified models"
           ls -l
           pwd
-          dbt run --select state:modified+ --defer --state dbt_run_artifacts --target-path transform_data/target --project-dir transform_data --profiles-dir transform_data
+          dbt run --select state:modified+ --defer --state ../dbt_run_artifacts --target-path transform_data/target --project-dir transform_data --profiles-dir transform_data
       
       - name: dbt full run if no manifest file
         if: "! ${{ hashFiles('dbt_run_artifacts/manifest.json') != '' }}"
