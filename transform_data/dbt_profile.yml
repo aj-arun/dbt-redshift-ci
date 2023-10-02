@@ -1,3 +1,4 @@
+
 EIDU:
   target: dev
   outputs:
@@ -7,9 +8,7 @@ EIDU:
       user: challenge_suganthi
       password: vcKJfn6YeXYK68eT8yBU
       dbname: challenge_suganthi
-      schema: user_behaviour
       port: 5439
       sslmode: verify-full # can be only 'verify-ca' if connecting from secure known network
       autocommit: true
       threads: 4
-      #connect_timeout: None

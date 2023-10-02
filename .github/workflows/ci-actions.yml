@@ -12,26 +12,10 @@ on:
   workflow_dispatch:
 
 jobs:
-  load_datasets_python:
-    runs-on: ubuntu-latest
-    container: 
-      image: python:3.9-slim-bookworm
 
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: install python packages
-        run: |
-          python -m pip config --quiet set global.disable-pip-version-check true
-          python -m pip install --quiet --user --requirement load_data/py_requirements.txt
-          echo "Installed Packages Successfully" ; cat load_data/py_requirements.txt
-
-      - name: execute load script
-        run: python load_data/load_data_to_redshift.py
 
   transformation_dbt:
     runs-on: ubuntu-latest
-    needs: [load_datasets_python]
     container:
       image: ghcr.io/dbt-labs/dbt-redshift:1.5.10
     
