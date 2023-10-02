@@ -34,7 +34,7 @@ school_master AS (
         MEDIAN(session_duration_minutes) AS median_session_length 
     
     FROM device_school t1
-    GROUP BY 1, 2
+    GROUP BY 1
 
 )
 
