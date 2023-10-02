@@ -24,14 +24,15 @@ on-run-start:
     - "CREATE SCHEMA IF NOT EXISTS transformed_data"
 
 models:
-  staging:
-    +database: "challenge_suganthi"
-    +schema: "prepared_data"
-    +materialized: view
-    +tags: ["kenya", "prepared", "log_events"]
+  EIDUEvents:
+    staging:
+      +database: "challenge_suganthi"
+      +schema: "prepared_data"
+      +materialized: view
+      +tags: ["kenya", "prepared", "log_events"]
 
-  marts:
-    +database: "challenge_suganthi"
-    +schema: "transformed_data"
-    +materialized: table
-    +tags: ["kenya", "transformed", "bi"]
+    marts:
+      +database: "challenge_suganthi"
+      +schema: "transformed_data"
+      +materialized: table
+      +tags: ["kenya", "transformed", "bi"]
