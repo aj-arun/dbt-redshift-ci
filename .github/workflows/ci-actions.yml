@@ -63,6 +63,7 @@ jobs:
 
       - name: git commit DBT state file
         run: |
+          mkdir -p dbt_run_artifacts
           cp -f target/manifest.json dbt_run_artifacts/manifest.json
           git config --global --add safe.directory $(realpath .)
           git config user.name github-actions
