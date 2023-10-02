@@ -52,7 +52,7 @@ jobs:
           echo "Dbt run state file exits"
           dbt compile --project-dir transform_data --profiles-dir transform_data --profile EIDU
           echo "DBT executing only modified models"
-          dbt run --select state:modified+ --defer --state dbt_run_artifacts --project-dir transform_data --profiles-dir transform_data --profile EIDU
+          dbt run --project-dir transform_data --profiles-dir transform_data --profile EIDU --select state:modified+ --defer --state dbt_run_artifacts 
       
       - name: dbt full run if no manifest file
         if: "! ${{ hashFiles('dbt_run_artifacts/manifest.json') != '' }}"
