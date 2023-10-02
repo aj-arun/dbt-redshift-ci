@@ -25,6 +25,7 @@ jobs:
       - name: dbt initialize
         run: |
           dbt --version
+          mkdir -p dbt_run_artifacts
           mv transform_data/dbt_profile.yml transform_data/profiles.yml
           
       - name: dbt test connection
@@ -34,18 +35,20 @@ jobs:
         id: check_manifest_json
         uses: andstor/file-existence-action@v2
         with:
-          files: "./dbt_run_artifacts/manifest.json"
+          files: "dbt_run_artifacts/manifest.json"
 
       - name: check_true
         if: steps.check_files.outputs.files_exists == 'true'
         run: |
           ls -l
+          ls -l dbt_run_artifacts
           echo "True condidion"
 
       - name: check_false
         if: steps.check_files.outputs.files_exists != 'true'
         run: |
           ls -l
+          ls -l dbt_run_artifacts
           echo "False condidion"
 
       - name: dbt slim run if manifest file exists
