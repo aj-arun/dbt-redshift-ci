@@ -38,14 +38,14 @@ jobs:
           files: "dbt_run_artifacts/manifest.json"
 
       - name: check_true
-        if: steps.check_files.outputs.files_exists == 'true'
+        if: steps.check_manifest_json.outputs.files_exists == 'true'
         run: |
           ls -l
           ls -l dbt_run_artifacts
           echo "True condidion"
 
       - name: check_false
-        if: steps.check_files.outputs.files_exists != 'true'
+        if: steps.check_manifest_json.outputs.files_exists != 'true'
         run: |
           ls -l
           ls -l dbt_run_artifacts
