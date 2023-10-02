@@ -53,7 +53,7 @@ jobs:
           dbt compile --project-dir transform_data --profiles-dir transform_data
           echo "DBT executing only modified models"
           cd transform_data
-          dbt run --profiles-dir .. --select state:modified+ --defer --state dbt_run_artifacts 
+          dbt run --profiles-dir .. --project-dir .. --select state:modified+ --defer --state dbt_run_artifacts 
       
       - name: dbt full run if no manifest file
         if: "! ${{ hashFiles('dbt_run_artifacts/manifest.json') != '' }}"
