@@ -4,10 +4,10 @@ EIDU:
   outputs:
     dev:
       type: redshift
-      host: analytics-redshift-cluster.cnoqgmxcuxwd.eu-west-1.redshift.amazonaws.com
-      user: challenge_suganthi
-      password: vcKJfn6YeXYK68eT8yBU
-      dbname: challenge_suganthi
+      host: 
+      user: 
+      password: 
+      dbname: 
       schema: public
       port: 5439
       sslmode: verify-full # can be only 'verify-ca' if connecting from secure known network
